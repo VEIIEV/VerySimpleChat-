@@ -21,9 +21,10 @@ public class ChatServer {
         serverSocket = new ServerSocket(1234);
     }
         //кривовато всё это выглядит, и не отображает сути, но работает
-    public void sendAll(String message) {
+    public void sendAll(String message, Client sender) {
         for (Client client: clients) {
-            client.receive(message);
+            client.receive(message, sender.name);
+
         }
     }
 
