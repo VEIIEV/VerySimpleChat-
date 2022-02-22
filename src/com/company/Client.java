@@ -12,6 +12,7 @@ public class Client implements Runnable {
     ChatServer server;
     Scanner in;
     PrintStream out;
+    String name;
 
     Client(Socket socket, ChatServer server) {
         this.socket = socket;
@@ -20,7 +21,10 @@ public class Client implements Runnable {
         new Thread(this).start();
     }
 
-    public void receive(String message) {
+    public void receive(String message, String name) {
+        if (this.name.equals(name)) {
+            out.print(name + ": ");
+        } else out.print(this.name + ": ");
         out.println(message);
     }
 
@@ -40,10 +44,11 @@ public class Client implements Runnable {
 
             // читаем из сети и пишем в сеть
             out.println("Welcome to chat!");
+            out.println("enter you name");
+            name = in.nextLine();
             String input = in.nextLine();
             while (!input.equals("bye")) {
-                out.print("me: ");
-                server.sendAll(input);
+                server.sendAll(input, this);
                 input = in.nextLine();
 
             }
